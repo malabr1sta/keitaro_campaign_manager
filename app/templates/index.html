@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Кампании · Keitaro</title>
+    <link rel="stylesheet" href="/static/style.css" />
+    <script src="/static/app.js" defer></script>
+  </head>
+  <body data-campaign-id="{{ cid or '' }}">
+    <header>
+      <a href="/" class="brand">K<span> / </span>Campaign Manager</a
+      ><span class="tag">Keitaro Wrapper</span>
+    </header>
+    <main>
+      <nav aria-label="Навигация">
+        <a href="/">Создать кампанию</a
+        ><a href="#campaign-search">Открыть кампанию</a>
+      </nav>
+      <section id="create-panel" {% if cid %}hidden{% endif %}>
+        <p class="eyebrow">Новая кампания</p>
+        <h1>От настройки к запуску</h1>
+        <p class="lead">
+          Выберите страну и оффер. Два потока будут созданы в Keitaro.
+        </p>
+        <form id="create-form" class="panel">
+          <label for="name">Название кампании</label
+          ><input
+            id="name"
+            name="name"
+            maxlength="255"
+            required
+            placeholder="Кофемашина — ноябрь"
+          />
+          <div class="columns">
+            <div>
+              <label for="country">Страна</label>
+              <div id="country-picker"></div>
+            </div>
+            <div>
+              <label for="offer">Оффер</label>
+              <div id="offer-picker"></div>
+            </div>
+          </div>
+          <details open>
+            <summary>Настройки кампании</summary>
+            <p class="muted">Существующие записи из вашего Keitaro.</p>
+            <div class="columns three">
+              <div>
+                <label for="domain_id">Домен</label
+                ><select id="domain_id" required>
+                  <option value="">Выберите домен</option>
+                </select>
+              </div>
+              <div>
+                <label for="group_id">Группа</label
+                ><select id="group_id" required>
+                  <option value="">Выберите группу</option>
+                </select>
+              </div>
+              <div>
+                <label for="traffic_source_id">Источник трафика</label
+                ><select id="traffic_source_id" required>
+                  <option value="">Выберите источник</option>
+                </select>
+              </div>
+            </div>
+            <p id="config-error" class="error" role="status"></p>
+            <button type="button" id="retry-config" class="secondary" hidden>
+              Загрузить справочники ещё раз
+            </button>
+          </details>
+          <aside class="route">
+            <strong>Будущий маршрут</strong>
+            <p id="route-country">Выберите страну → Google</p>
+            <p id="route-offer">Все остальные → Выберите оффер</p>
+          </aside>
+          <p id="create-message" role="status" aria-live="polite"></p>
+          <button id="create-button" type="submit" disabled>
+            Создать кампанию
+          </button>
+          <button id="resume-button" type="button" class="secondary" hidden>
+            Проверить и продолжить
+          </button>
+        </form>
+      </section>
+      <section class="search-section" id="campaign-search">
+        <h2>Открыть кампанию</h2>
+        <label for="campaign-query">Поиск по названию или ID</label>
+        <div id="campaign-picker"></div>
+        <form id="open-form" class="inline">
+          <label for="campaign-id">Или ID кампании</label
+          ><input id="campaign-id" type="number" min="1" required /><button
+            class="secondary"
+          >
+            Открыть
+          </button>
+        </form>
+      </section>
+      <section id="editor" {% if not cid %}hidden{% endif %} aria-live="polite">
+        <div class="editor-heading">
+          <div>
+            <p class="eyebrow">Редактор кампании</p>
+            <h1 id="campaign-title">Загрузка…</h1>
+          </div>
+          <button id="refresh" class="secondary">Обновить</button>
+        </div>
+        <p id="editor-message" role="status"></p>
+        <div id="campaign-meta" class="meta"></div>
+        <p class="notice">
+          Временное правило: при изменении состава доли распределяются поровну.
+          Последний активный оффер нельзя убрать. Соответствие видео пока не
+          подтверждено.
+        </p>
+        <div id="streams"></div>
+      </section>
+    </main>
+    <footer>
+      Конфигурация хранится в Keitaro. Проценты — доли внутри потока, а не
+      статистика кликов.
+    </footer>
+  </body>
+</html>

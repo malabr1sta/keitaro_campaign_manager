@@ -221,3 +221,14 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local credentials and runtime data
+.env
+.env.*
+!.env.example
+data/
+*.db
+.venv/
+.ruff_cache/
+
+test-results/
